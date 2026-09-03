@@ -1,0 +1,3 @@
+[submodule "resources/courses"]
+	path = resources/courses
+	url = https://github.com/anthropics/courses.git
