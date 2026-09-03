@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Development — Your 14-Week Roadmap</title>
+<style>
+  :root{
+    --ink:#141D27;
+    --muted:#5A6673;
+    --line:#D9E1E8;
+    --grid:rgba(31,119,180,.05);
+    --a:#1F77B4;        /* matplotlib C0 — Track A, fundamentals & the loop */
+    --a-ink:#17618F;
+    --a-bg:#EAF3F9;
+    --b:#FF7F0E;        /* matplotlib C1 — Track B, frameworks & MCP */
+    --b-ink:#B25A05;
+    --b-bg:#FDF3E7;
+    --c:#2CA02C;        /* matplotlib C2 — Track C, reliability & shipping */
+    --c-ink:#1E701E;
+    --c-bg:#EAF6EA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    font-family:'Times New Roman',Times,serif;
+    font-size:16px;line-height:1.55;color:var(--ink);
+    background-color:#FCFDFE;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:26px 26px;
+  }
+  .topline{height:3px;background:linear-gradient(90deg,var(--a) 0 43%,var(--b) 43% 64%,var(--c) 64% 100%)}
+  .wrap{max-width:940px;margin:0 auto;padding:52px 22px 72px}
+  a{color:var(--a-ink);text-decoration-thickness:1px;text-underline-offset:2px}
+  a:hover{color:var(--a)}
+  :focus-visible{outline:2px solid var(--a);outline-offset:2px}
+
+  /* ---------- header ---------- */
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  h1{font-weight:600;font-size:clamp(30px,4.6vw,44px);line-height:1.12;letter-spacing:-.005em;margin:14px 0 10px;width:100%;text-align:center}
+  .byline{font-size:12.5px;color:var(--muted);margin-bottom:24px}
+  .abstract{background:#fff;border:1px solid var(--line);border-radius:3px;padding:20px 24px}
+  .abstract p{font-size:15.5px}
+  .abstract .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:8px}
+  .toc{display:flex;flex-wrap:wrap;gap:8px 20px;margin:18px 2px 0;font-size:12.5px}
+  .toc a{text-decoration:none;border-bottom:1px dotted var(--a-ink)}
+
+  /* ---------- figure ---------- */
+  .figure{margin:34px 0 6px;background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px 16px 6px}
+  .figure svg{display:block;width:100%;height:auto}
+  .figcap{font-size:12px;line-height:1.6;color:var(--muted);padding:10px 6px 12px}
+  .ax{font-size:11px;fill:var(--muted)}
+  .ck{font-size:10px;fill:#5A6673}
+
+  /* ---------- section chrome ---------- */
+  .sec{margin-top:48px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:18px}
+  .sec-head h2{font-weight:600;font-size:24px}
+  .sec-no{font-size:12px;color:var(--muted)}
+
+  /* ---------- principle / track cards ---------- */
+  .tracks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tracks.two{grid-template-columns:1fr 1fr}
+  .track{background:#fff;border:1px solid var(--line);border-top:3px solid var(--a);border-radius:3px;padding:18px 20px}
+  .track.b{border-top-color:var(--b)}
+  .track.c{border-top-color:var(--c)}
+  .track.n{border-top-color:#8794A1}
+  .track h3{font-weight:600;font-size:19px;margin-bottom:6px}
+  .track p{font-size:14.5px;color:#3D4854}
+  .track .mono-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:8px}
+  .track .mono-tag.ta{color:var(--a-ink)} .track .mono-tag.tb{color:var(--b-ink)} .track .mono-tag.tc{color:var(--c-ink)} .track .mono-tag.tn{color:#4C5762}
+  .converge{grid-column:1 / -1;background:#fff;border:1px dashed #B9C6D0;border-radius:3px;padding:14px 20px;font-size:14.5px;color:#3D4854}
+  @media (max-width:860px){.tracks,.tracks.two{grid-template-columns:1fr}.converge{grid-column:auto}}
+
+  /* ---------- cadence + map table ---------- */
+  .rules{list-style:none;margin:20px 0 0}
+  .rules li{position:relative;padding-left:20px;margin:8px 0;font-size:15px}
+  .rules li::before{content:"–";position:absolute;left:2px;color:#8B97A3}
+  .hw{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);font-size:14.5px}
+  .hw th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+  .hw td{padding:9px 14px;border-top:1px solid #EAEFF3;vertical-align:top}
+  .hw td:first-child{font-size:13px;white-space:nowrap}
+  @media (max-width:700px){.hw td:first-child{white-space:normal}}
+
+  /* ---------- phase cards ---------- */
+  .phase{background:#fff;border:1px solid var(--line);border-left:3px solid var(--a);border-radius:3px;padding:24px 26px;margin-bottom:16px}
+  .phase.tb{border-left-color:var(--b)}
+  .phase.tc{border-left-color:var(--c)}
+  .phase.sh{border-left-color:#8794A1}
+  .ph-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px}
+  .tag{font-size:11.5px;letter-spacing:.08em;padding:3px 9px;border-radius:2px;border:1px solid}
+  .tag.a{color:var(--a-ink);background:var(--a-bg);border-color:#BFD9EA}
+  .tag.b{color:var(--b-ink);background:var(--b-bg);border-color:#F0D2AC}
+  .tag.c{color:var(--c-ink);background:var(--c-bg);border-color:#BCE0BC}
+  .tag.n{color:#4C5762;background:#F1F4F6;border-color:#D7DEE4}
+  .wks{font-size:12px;color:var(--muted);margin-left:auto}
+  .phase h3{font-weight:600;font-size:21px;margin:2px 0 4px}
+  .goal{font-style:italic;font-size:16px;color:#46525E;margin-bottom:14px}
+  .learn{list-style:none;margin:0 0 4px}
+  .learn li{position:relative;padding-left:20px;margin:8px 0;font-size:15px}
+  .learn li::before{content:"–";position:absolute;left:2px;color:#8B97A3}
+  code{font-family:'Times New Roman',Times,serif;font-size:.85em;background:#F1F5F8;border:1px solid #E0E8EE;border-radius:3px;padding:1px 5px}
+  .ship{border:1px dashed #B9C6D0;background:#FAFCFD;border-radius:3px;padding:12px 16px;margin:16px 0 4px;font-size:15px}
+  .ship .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--a-ink)}
+  .phase.tb .ship .lbl{color:var(--b-ink)}
+  .phase.tc .ship .lbl{color:var(--c-ink)}
+  .phase.sh .ship .lbl{color:#4C5762}
+  .chk{border:1px solid var(--line);background:#fff;border-radius:3px;padding:11px 16px;margin:12px 0 4px;font-size:14.5px}
+  .chk .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px;color:#4C5762}
+  .sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin:16px 0 6px}
+  .mats{margin-top:16px;border-top:1px dotted #C9D3DC;padding-top:12px}
+  .mats .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  .mats ul{list-style:none;margin:0}
+  .mats li{display:flex;gap:12px;align-items:baseline;margin:7px 0;font-size:14.5px}
+  .mats .verb{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#7B8794;flex:none;width:50px;text-align:right}
+  .mats .mb{flex:1;min-width:0}
+  .mats .note{color:var(--muted)}
+
+  /* ---------- progress tracker ---------- */
+  .grp{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px 22px;margin-bottom:14px}
+  .grp h3{font-weight:600;font-size:18px;margin-bottom:8px}
+  .grp label{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-size:15px;cursor:pointer}
+  .grp input{margin-top:4px;width:15px;height:15px;flex:none;accent-color:var(--a)}
+  .grp.gb input{accent-color:var(--b)}
+  .grp.gc input{accent-color:var(--c)}
+
+  /* ---------- resource library ---------- */
+  .beyond{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .bx{background:#fff;border:1px solid var(--line);border-top:3px solid #8794A1;border-radius:3px;padding:16px 18px}
+  .bx h3{font-weight:600;font-size:17px;margin-bottom:5px}
+  .bx p{font-size:14px;color:#3D4854}
+  .bx ul{list-style:none;margin:6px 0 0}
+  .bx li{margin:6px 0;font-size:14px}
+  .bx .note{color:var(--muted)}
+  @media (max-width:700px){.beyond{grid-template-columns:1fr}}
+
+  /* ---------- references / essential reads ---------- */
+  .refs ol{list-style:none;counter-reset:r}
+  .refs li{counter-increment:r;position:relative;padding-left:46px;margin:9px 0;font-size:14.5px}
+  .refs li::before{content:"[" counter(r) "]";position:absolute;left:0;font-size:13px;color:var(--muted)}
+  .refs .src{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="topline" aria-hidden="true"></div>
+<div class="wrap">
+
+  <!-- ================= HEADER ================= -->
+  <header>
+    <div class="eyebrow">cs.AI · self-study roadmap · rev 1.0 — jul 2026</div>
+    <h1>AI Agent Development</h1>
+    <div class="byline">Your 14-week roadmap · seven phases · six shipped projects · Python basics assumed · 10–20 h / week</div>
+    <div class="abstract">
+      <p><span class="lbl">Abstract</span>This roadmap takes you from Python basics to career-ready agent-engineering skill: by week 14 you can design, build, evaluate, and deploy LLM agents — backed by a GitHub portfolio of 5+ projects and the fundamentals to handle AI-engineer interviews. Fourteen weeks, seven phases, every phase ending in a shipped repo, because employers hire on evidence, not certificates. <em>Prepared July 2026. The field moves fast — if you're reading this months later, re-verify tools and links.</em></p>
+    </div>
+    <nav class="toc" aria-label="Contents">
+      <a href="#principles">§1 Principles</a>
+      <a href="#map">§2 The map</a>
+      <a href="#phases">§3 Phases 0–6</a>
+      <a href="#library">§4 Resource library</a>
+      <a href="#tutor">§5 Tutor loop</a>
+      <a href="#tracker">§6 Progress tracker</a>
+    </nav>
+  </header>
+
+  <!-- ================= FIGURE 1 ================= -->
+  <figure class="figure">
+    <svg viewBox="0 0 760 380" role="img" aria-labelledby="fig1title">
+      <title id="fig1title">Planned proficiency by week across fundamentals, frameworks, and reliability skills, with all three curves sharing one origin at week 0 and converging to a single point at the week-14 capstone.</title>
+
+      <!-- plot frame -->
+      <rect x="64" y="24" width="656" height="296" fill="none" stroke="#D9E1E8" stroke-width="1"/>
+
+      <!-- horizontal gridlines -->
+      <line x1="64" y1="110" x2="720" y2="110" stroke="#E6EBF0" stroke-dasharray="2 4"/>
+      <line x1="64" y1="180" x2="720" y2="180" stroke="#E6EBF0" stroke-dasharray="2 4"/>
+      <line x1="64" y1="250" x2="720" y2="250" stroke="#E6EBF0" stroke-dasharray="2 4"/>
+
+      <!-- vertical gridlines at even weeks -->
+      <line x1="158" y1="24" x2="158" y2="320" stroke="#EDF1F5" stroke-dasharray="2 4"/>
+      <line x1="251" y1="24" x2="251" y2="320" stroke="#EDF1F5" stroke-dasharray="2 4"/>
+      <line x1="345" y1="24" x2="345" y2="320" stroke="#EDF1F5" stroke-dasharray="2 4"/>
+      <line x1="439" y1="24" x2="439" y2="320" stroke="#EDF1F5" stroke-dasharray="2 4"/>
+      <line x1="533" y1="24" x2="533" y2="320" stroke="#EDF1F5" stroke-dasharray="2 4"/>
+      <line x1="626" y1="24" x2="626" y2="320" stroke="#EDF1F5" stroke-dasharray="2 4"/>
+
+      <!-- track handoffs -->
+      <line x1="369" y1="24" x2="369" y2="320" stroke="#C3CDD6" stroke-dasharray="4 4"/>
+      <text x="377" y="40" class="ck">A → B · scratch → frameworks</text>
+      <line x1="509" y1="24" x2="509" y2="320" stroke="#C3CDD6" stroke-dasharray="4 4"/>
+      <text x="517" y="56" class="ck">B → C</text>
+
+      <!-- Track C curve (reliability & shipping, C2 green) -->
+      <path d="M 64 314 C 130 313, 200 312, 250 311 C 300 310, 350 308, 400 305 C 430 303, 462 300, 486 294 C 504 289, 519 267, 533 246 C 549 222, 562 199, 579 180 C 603 153, 627 133, 650 116 C 674 100, 700 87, 720 76"
+            fill="none" stroke="#2CA02C" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Track B curve (frameworks & MCP, C1 orange) -->
+      <path d="M 64 314 C 96 313, 128 312, 160 311 C 190 309, 220 307, 250 305 C 282 302, 318 298, 345 292 C 370 283, 393 260, 415 235 C 438 209, 462 188, 486 170 C 508 153, 548 146, 579 140 C 603 134, 627 127, 650 120 C 674 111, 700 93, 720 76"
+            fill="none" stroke="#FF7F0E" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Track A curve (fundamentals & the loop, C0 blue) -->
+      <path d="M 64 314 C 80 306, 96 297, 111 289 C 142 272, 174 246, 205 225 C 236 204, 268 185, 298 168 C 314 161, 330 154, 345 148 C 392 131, 439 125, 486 120 C 517 116, 548 111, 579 106 C 626 99, 673 89, 720 76"
+            fill="none" stroke="#1F77B4" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- shared origin marker -->
+      <circle cx="64" cy="314" r="4.5" fill="#fff" stroke="#5A6673" stroke-width="2.5"/>
+
+      <!-- project markers: Track A -->
+      <circle cx="111" cy="289" r="4.5" fill="#fff" stroke="#1F77B4" stroke-width="2.5"/>
+      <circle cx="205" cy="225" r="4.5" fill="#fff" stroke="#1F77B4" stroke-width="2.5"/>
+      <circle cx="298" cy="168" r="4.5" fill="#fff" stroke="#1F77B4" stroke-width="2.5"/>
+      <circle cx="345" cy="148" r="4.5" fill="#fff" stroke="#1F77B4" stroke-width="2.5"/>
+      <text x="111" y="274" text-anchor="middle" class="ck">hello-agent</text>
+      <text x="205" y="211" text-anchor="middle" class="ck">P1</text>
+      <text x="298" y="192" text-anchor="middle" class="ck">P2</text>
+      <text x="345" y="133" text-anchor="middle" class="ck">P3</text>
+
+      <!-- project marker: Track B -->
+      <circle cx="486" cy="170" r="4.5" fill="#fff" stroke="#FF7F0E" stroke-width="2.5"/>
+      <text x="486" y="192" text-anchor="middle" class="ck">P4</text>
+
+      <!-- project marker: Track C -->
+      <circle cx="579" cy="180" r="4.5" fill="#fff" stroke="#2CA02C" stroke-width="2.5"/>
+      <text x="579" y="202" text-anchor="middle" class="ck">P5</text>
+
+      <!-- capstone markers -->
+      <rect x="712.5" y="68.5" width="15" height="15" transform="rotate(45 720 76)" fill="#fff" stroke="#1F77B4" stroke-width="2"/>
+      <rect x="715" y="71" width="10" height="10" transform="rotate(45 720 76)" fill="none" stroke="#FF7F0E" stroke-width="2"/>
+      <rect x="717.5" y="73.5" width="5" height="5" transform="rotate(45 720 76)" fill="#2CA02C" stroke="none"/>
+      <text x="712" y="56" text-anchor="end" class="ck">capstone · wk 14</text>
+
+      <!-- legend -->
+      <rect x="84" y="42" width="252" height="82" fill="#fff" stroke="#DCE3EA"/>
+      <line x1="98" y1="62" x2="128" y2="62" stroke="#1F77B4" stroke-width="2.5"/>
+      <line x1="98" y1="84" x2="128" y2="84" stroke="#FF7F0E" stroke-width="2.5"/>
+      <line x1="98" y1="106" x2="128" y2="106" stroke="#2CA02C" stroke-width="2.5"/>
+      <text x="138" y="66" class="ax">A · fundamentals &amp; the loop</text>
+      <text x="138" y="88" class="ax">B · frameworks &amp; MCP</text>
+      <text x="138" y="110" class="ax">C · reliability &amp; shipping</text>
+
+      <!-- x-axis ticks + labels -->
+      <line x1="64" y1="320" x2="64" y2="326" stroke="#9AA6B2"/>
+      <line x1="158" y1="320" x2="158" y2="326" stroke="#9AA6B2"/>
+      <line x1="251" y1="320" x2="251" y2="326" stroke="#9AA6B2"/>
+      <line x1="345" y1="320" x2="345" y2="326" stroke="#9AA6B2"/>
+      <line x1="439" y1="320" x2="439" y2="326" stroke="#9AA6B2"/>
+      <line x1="533" y1="320" x2="533" y2="326" stroke="#9AA6B2"/>
+      <line x1="626" y1="320" x2="626" y2="326" stroke="#9AA6B2"/>
+      <line x1="720" y1="320" x2="720" y2="326" stroke="#9AA6B2"/>
+      <text x="64" y="342" text-anchor="middle" class="ax">0</text>
+      <text x="158" y="342" text-anchor="middle" class="ax">2</text>
+      <text x="251" y="342" text-anchor="middle" class="ax">4</text>
+      <text x="345" y="342" text-anchor="middle" class="ax">6</text>
+      <text x="439" y="342" text-anchor="middle" class="ax">8</text>
+      <text x="533" y="342" text-anchor="middle" class="ax">10</text>
+      <text x="626" y="342" text-anchor="middle" class="ax">12</text>
+      <text x="720" y="342" text-anchor="middle" class="ax">14</text>
+      <text x="392" y="366" text-anchor="middle" class="ax">weeks</text>
+
+      <!-- y-axis label -->
+      <text x="46" y="172" text-anchor="middle" transform="rotate(-90 46 172)" class="ax">proficiency →</text>
+    </svg>
+    <figcaption class="figcap">Figure 1 — Planned proficiency by week. Markers are shipped projects: each phase ends with a repo on GitHub, not a chapter you finish. Focus hands off from scratch-built fundamentals to frameworks after week&nbsp;6 (P3) and from frameworks to evaluation after week&nbsp;9 (P4). Reliability skill starts accruing back at P2 — the first agent whose every step you trace — then compounds through the eval suite. All three arcs leave one origin and meet at one point: the deployed capstone at week&nbsp;14.</figcaption>
+  </figure>
+
+  <!-- ================= §1 PRINCIPLES ================= -->
+  <section class="sec" id="principles">
+    <div class="sec-head"><span class="sec-no">§1</span><h2>Why this plan is shaped the way it is</h2></div>
+    <div class="tracks two">
+      <div class="track">
+        <span class="mono-tag ta">Principle 1</span>
+        <h3>Fundamentals before frameworks</h3>
+        <p>Anthropic's guidance for builders is to start with direct LLM API calls — most agent patterns are a few lines of code, and frameworks add abstraction that hides what's actually happening. Interviews probe fundamentals, so you'll build the agent loop from scratch before touching LangGraph.</p>
+      </div>
+      <div class="track b">
+        <span class="mono-tag tb">Principle 2</span>
+        <h3>One shipped project per phase</h3>
+        <p>Employers hire on evidence, not certificates. Everything goes on GitHub — six projects by week 14, each one a repo someone else can clone, run, and judge.</p>
+      </div>
+      <div class="track c">
+        <span class="mono-tag tc">Principle 3</span>
+        <h3>Evaluation is the career differentiator</h3>
+        <p>Anyone can demo an agent; few people can make one reliable. Phases 5–6 are where you separate from the crowd.</p>
+      </div>
+      <div class="track n">
+        <span class="mono-tag tn">Principle 4</span>
+        <h3>Simplest thing that works</h3>
+        <p>A large share of real-world "agent" tasks are actually solved by a single well-prompted LLM call with structured output. Knowing when <em>not</em> to build an agent is itself a job skill.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= §2 THE MAP ================= -->
+  <section class="sec" id="map">
+    <div class="sec-head"><span class="sec-no">§2</span><h2>The map</h2></div>
+    <table class="hw">
+      <thead><tr><th>Weeks</th><th>Phase</th><th>Theme</th><th>You ship</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="tag n">ph-0</span></td><td>Toolkit &amp; Python leveling</td><td>"Hello, LLM" repo</td></tr>
+        <tr><td>2–3</td><td><span class="tag a">ph-1</span></td><td>LLM &amp; API foundations</td><td>CLI chat assistant</td></tr>
+        <tr><td>4–5</td><td><span class="tag a">ph-2</span></td><td>Tool use &amp; the agent loop (no framework)</td><td>Research agent from scratch</td></tr>
+        <tr><td>6</td><td><span class="tag a">ph-3</span></td><td>RAG, memory &amp; context engineering</td><td>"Chat with your docs" agent</td></tr>
+        <tr><td>7–9</td><td><span class="tag b">ph-4</span></td><td>Frameworks (LangGraph) + MCP</td><td>Agent rebuilt with human-in-the-loop + custom MCP server</td></tr>
+        <tr><td>10–11</td><td><span class="tag c">ph-5</span></td><td>Evals, observability, guardrails</td><td>Eval suite + fully traced agent</td></tr>
+        <tr><td>12–14</td><td><span class="tag n">ph-6</span></td><td>Capstone &amp; career packaging</td><td>Deployed capstone + portfolio</td></tr>
+      </tbody>
+    </table>
+    <ul class="rules">
+      <li><strong>Weekly rhythm.</strong> Roughly 60% building, 30% courses and docs, 10% reading and community.</li>
+      <li><strong>Phases over week numbers.</strong> At a steady 10 hrs/week this stretches to ~17 weeks; at 20 hrs/week some phases compress. Move by checkpoint, not by calendar.</li>
+      <li><strong>Non-negotiable.</strong> Don't skip Phase 2 or Phase 5, no matter what.</li>
+    </ul>
+  </section>
+
+  <!-- ================= §3 PHASES ================= -->
+  <section class="sec" id="phases">
+    <div class="sec-head"><span class="sec-no">§3</span><h2>The phases</h2></div>
+
+    <!-- ph-0 -->
+    <article class="phase sh">
+      <div class="ph-top">
+        <span class="tag n">ph-0</span><span class="tag n">setup</span>
+        <span class="wks">week 1</span>
+      </div>
+      <h3>Toolkit &amp; Python leveling</h3>
+      <p class="goal">A professional dev setup and the specific Python you'll use constantly.</p>
+      <ul class="learn">
+        <li>Git + GitHub: init, commit, branch, push, and writing a README.</li>
+        <li>Environments: <code>uv</code> (modern, fast) or <code>venv</code> + pip; VS Code; a <code>.env</code> file with <code>python-dotenv</code> for API keys — never commit keys.</li>
+        <li>Python essentials for agent work: functions and type hints, dicts and JSON handling, error handling with try/except, classes and dataclasses, Pydantic models, <code>async/await</code> basics, HTTP calls with <code>httpx</code>.</li>
+        <li>Get an API key (Anthropic Console and/or OpenAI) and understand tokens and pricing so costs never surprise you — use the cheapest model tier while learning.</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship →</span>A repo <code>hello-agent</code> containing a script that sends a prompt to an LLM API, streams the reply to the terminal, and prints tokens used + estimated cost. README explains setup.</div>
+      <div class="chk"><span class="lbl">Checkpoint — you can explain</span>What a token is · why API keys live in <code>.env</code> · what <code>async</code> buys you · the difference between a system and a user message.</div>
+      <div class="mats"><span class="lbl">Materials</span>
+        <ul>
+          <li><span class="verb">work</span><span class="mb"><a href="https://docs.python.org/3/tutorial/">Official Python tutorial</a> <span class="note">— for any gaps in the essentials list</span></span></li>
+          <li><span class="verb">read</span><span class="mb"><a href="https://docs.github.com/en/get-started">GitHub getting started</a> <span class="note">— init through pull request</span></span></li>
+          <li><span class="verb">read</span><span class="mb"><a href="https://docs.claude.com">Anthropic API getting started</a> <span class="note">— keys, first request, pricing</span></span></li>
+          <li><span class="verb">skim</span><span class="mb"><a href="https://docs.pydantic.dev">Pydantic docs</a> <span class="note">— just the "Models" page for now</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ph-1 -->
+    <article class="phase">
+      <div class="ph-top">
+        <span class="tag a">ph-1</span><span class="tag a">track A</span>
+        <span class="wks">weeks 2–3</span>
+      </div>
+      <h3>LLM &amp; API foundations</h3>
+      <p class="goal">Total comfort with the raw ingredients every agent is made of.</p>
+      <ul class="learn">
+        <li>Chat structure: system vs. user vs. assistant messages; the API is stateless — <em>you</em> manage conversation history.</li>
+        <li>Sampling controls: temperature, max tokens, and when to use temperature 0; streaming responses.</li>
+        <li>Prompt engineering: clear instructions, few-shot examples, structured/XML prompts, giving the model room to reason.</li>
+        <li>Structured output: requesting JSON, validating with Pydantic, retrying on invalid output — this pattern alone powers a huge share of production systems.</li>
+        <li>The model landscape: capability tiers vs. price; develop on cheap models, test on strong ones.</li>
+        <li>Intuition for what's under the hood — pick one: 3Blue1Brown's neural-networks/Transformer series or Karpathy's "Intro to Large Language Models."</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship → Project 1</span>A CLI chat assistant: multi-turn memory, streaming, switchable system-prompt personas, a <code>/save</code> command for transcripts, and a running token/cost meter. Stretch goal: when history gets long, summarize older turns and keep the summary in context.</div>
+      <div class="chk"><span class="lbl">Checkpoint — you can</span>Manage conversation history by hand · reliably get valid JSON from a model · estimate what 1,000 user queries would cost.</div>
+      <div class="mats"><span class="lbl">Materials</span>
+        <ul>
+          <li><span class="verb">work</span><span class="mb"><a href="https://anthropic.skilljar.com">Anthropic Academy — "Building with the Claude API"</a> <span class="note">— free, ~8 hrs of video, certificate</span></span></li>
+          <li><span class="verb">read</span><span class="mb"><a href="https://docs.claude.com">Anthropic prompt engineering docs</a> <span class="note">— the techniques you'll use in every project</span></span></li>
+          <li><span class="verb">work</span><span class="mb"><a href="https://github.com/anthropics/courses">anthropics/courses Jupyter notebooks</a> <span class="note">— code along</span></span></li>
+          <li><span class="verb">do</span><span class="mb"><a href="https://www.deeplearning.ai/short-courses/">DeepLearning.AI short courses</a> <span class="note">— free to audit; pick one on prompting or structured output</span></span></li>
+          <li><span class="verb">watch</span><span class="mb"><a href="https://www.3blue1brown.com/topics/neural-networks">3Blue1Brown — neural networks &amp; Transformers</a> or <a href="https://www.youtube.com/watch?v=zjkBMFhNj_g">Karpathy — "Intro to Large Language Models"</a> <span class="note">— one of the two, for intuition</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ph-2 -->
+    <article class="phase">
+      <div class="ph-top">
+        <span class="tag a">ph-2</span><span class="tag a">track A</span>
+        <span class="wks">weeks 4–5</span>
+      </div>
+      <h3>Tool use &amp; the agent loop — from scratch</h3>
+      <p class="goal">The heart of the entire plan: an agent is just an LLM in a loop, with tools, working toward a goal. Build that loop yourself once and no framework will ever be magic to you.</p>
+      <ul class="learn">
+        <li>Tool use (function calling): defining tool schemas, letting the model request a call, executing it in your code, returning the result to the model.</li>
+        <li>The agent loop: call model → if it requests a tool, run it → append result → call model again → stop when the task is done or max iterations hit.</li>
+        <li>Read <strong>"Building Effective Agents"</strong> (Anthropic) — twice. Internalize the core distinction: <em>workflows</em> (prompt chaining, routing, parallelization, orchestrator–workers, evaluator–optimizer) vs. <em>agents</em>, and the advice to use the simplest pattern that works.</li>
+        <li>ReAct — the 2022 paper that named the reason-then-act pattern; skim for grounding.</li>
+        <li>Failure handling: malformed tool calls, tool errors, runaway loops, timeouts, max-iteration guards.</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship → Project 2</span>A research agent, zero frameworks. Tools: web search (Tavily or Brave Search API have free tiers), calculator, and file read/write. It should handle questions like "Compare the populations of Japan's three largest cities and save a summary to a file." Include a max-iteration guard and print a readable trace of every step it takes.</div>
+      <div class="chk"><span class="lbl">Checkpoint — you can</span>Whiteboard the agent loop from memory · explain when a workflow beats an agent · name the five workflow patterns with a use case for each. This checkpoint is interview gold.</div>
+      <div class="mats"><span class="lbl">Materials</span>
+        <ul>
+          <li><span class="verb">read</span><span class="mb"><a href="https://www.anthropic.com/research/building-effective-agents">Building Effective Agents — Anthropic</a> <span class="note">— twice; the spine of this phase</span></span></li>
+          <li><span class="verb">work</span><span class="mb"><a href="https://docs.claude.com">Tool use guide</a> + <a href="https://github.com/anthropics/anthropic-cookbook">anthropic-cookbook examples</a> <span class="note">— schemas and the loop, in code</span></span></li>
+          <li><span class="verb">read</span><span class="mb"><a href="https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf">OpenAI — A Practical Guide to Building Agents</a> <span class="note">— free PDF</span></span></li>
+          <li><span class="verb">skim</span><span class="mb"><a href="https://arxiv.org/abs/2210.03629">ReAct paper</a> <span class="note">— where reason-then-act got its name</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ph-3 -->
+    <article class="phase">
+      <div class="ph-top">
+        <span class="tag a">ph-3</span><span class="tag a">track A</span>
+        <span class="wks">week 6</span>
+      </div>
+      <h3>RAG, memory &amp; context engineering</h3>
+      <p class="goal">Give agents knowledge they weren't trained on — and manage their limited attention.</p>
+      <ul class="learn">
+        <li>Embeddings and similarity search; chunking strategies; a local vector store (Chroma is the easiest start).</li>
+        <li>The RAG pipeline: ingest → embed → retrieve → insert into prompt → answer with citations.</li>
+        <li>Agentic RAG: retrieval as a <em>tool</em> the agent decides when to call.</li>
+        <li>Memory patterns: rolling summaries for short-term; files or a small database for long-term.</li>
+        <li>Context engineering: deciding what goes into the context window and what stays out — read Anthropic's engineering posts on effective context engineering and on writing effective tools for agents.</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship → Project 3</span>"Chat with your docs." Ingest a folder of PDFs/markdown in a domain you know well, answer questions with citations to source chunks, then plug retrieval in as a tool on your Phase 2 agent.</div>
+      <div class="chk"><span class="lbl">Checkpoint — you can</span>Explain chunk-size tradeoffs · describe two ways RAG fails and why.</div>
+      <div class="mats"><span class="lbl">Materials</span>
+        <ul>
+          <li><span class="verb">read</span><span class="mb"><a href="https://www.anthropic.com/engineering">Anthropic engineering blog</a> <span class="note">— the context-engineering and tool-writing posts</span></span></li>
+          <li><span class="verb">work</span><span class="mb"><a href="https://docs.trychroma.com">Chroma getting started</a> <span class="note">— your first local vector store</span></span></li>
+          <li><span class="verb">do</span><span class="mb"><a href="https://www.deeplearning.ai/short-courses/">A DeepLearning.AI RAG short course</a> <span class="note">— audit free</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ph-4 -->
+    <article class="phase tb">
+      <div class="ph-top">
+        <span class="tag b">ph-4</span><span class="tag b">track B</span>
+        <span class="wks">weeks 7–9</span>
+      </div>
+      <h3>Frameworks &amp; MCP</h3>
+      <p class="goal">Now that you know what frameworks abstract away, learn the ones the job market actually uses.</p>
+      <ul class="learn">
+        <li><strong>LangGraph</strong> (weeks 7–8) — the current production standard for stateful agent orchestration: graphs, nodes and edges, state, checkpointing/persistence, human-in-the-loop interrupts, streaming. Do LangChain Academy's free "Introduction to LangGraph."</li>
+        <li><strong>MCP — Model Context Protocol</strong> (week 9) — the open standard for connecting agents to tools and data; think USB-C for AI integrations. Every major framework now supports it. Build a server exposing 2–3 custom tools and connect it to Claude. Anthropic Academy's MCP courses walk this end-to-end in Python, including the three primitives: tools, resources, prompts.</li>
+        <li><strong>Survey the landscape</strong> (a half-day each, breadth for interviews): OpenAI Agents SDK, Claude Agent SDK, CrewAI, Pydantic AI. Know each one's sweet spot; you don't need mastery.</li>
+        <li>Multi-agent patterns: orchestrator–workers, subagents for context isolation.</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship → Projects 4a + 4b</span><strong>4a:</strong> rebuild your research agent in LangGraph with persistent checkpoints and a human-approval interrupt before any file write. <strong>4b:</strong> a custom MCP server for something personal — your notes, a hobby API, your work domain. MCP servers make excellent portfolio pieces because other people can actually plug them into their own agents.</div>
+      <div class="chk"><span class="lbl">Checkpoint — you can</span>Explain what LangGraph checkpointing gives you over your hand-rolled loop · describe MCP's client–server architecture and its three primitives.</div>
+      <div class="mats"><span class="lbl">Materials</span>
+        <ul>
+          <li><span class="verb">work</span><span class="mb"><a href="https://academy.langchain.com">LangChain Academy — Introduction to LangGraph</a> <span class="note">— free</span></span></li>
+          <li><span class="verb">read</span><span class="mb"><a href="https://langchain-ai.github.io/langgraph/">LangGraph docs</a> <span class="note">— state, checkpointing, interrupts</span></span></li>
+          <li><span class="verb">work</span><span class="mb"><a href="https://modelcontextprotocol.io">MCP spec and tutorials</a> <span class="note">— the standard itself</span></span></li>
+          <li><span class="verb">work</span><span class="mb"><a href="https://anthropic.skilljar.com">Anthropic Academy MCP courses</a> <span class="note">— server building end-to-end in Python</span></span></li>
+          <li><span class="verb">work</span><span class="mb"><a href="https://huggingface.co/learn/agents-course">Hugging Face AI Agents Course</a> <span class="note">— free, beginner-to-expert, covers smolagents/LlamaIndex/LangGraph, optional certificate; good parallel track</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ph-5 -->
+    <article class="phase tc">
+      <div class="ph-top">
+        <span class="tag c">ph-5</span><span class="tag c">track C</span>
+        <span class="wks">weeks 10–11</span>
+      </div>
+      <h3>Evaluation, observability &amp; guardrails</h3>
+      <p class="goal">The career differentiator: demos are easy; reliability is what gets hired.</p>
+      <ul class="learn">
+        <li>Tracing: instrument your agent with LangSmith (free tier, deepest LangGraph integration) or Langfuse (open-source, self-hostable) so you can see every step, token, and dollar.</li>
+        <li>Building an eval set: 25–50 real test cases with expected outcomes, graded by exact match, rubric, or LLM-as-judge.</li>
+        <li>Regression testing: re-run evals on every prompt or model change; track pass rates over time.</li>
+        <li>Agent-specific metrics: task success rate, tool-selection accuracy, steps-to-completion, cost per task.</li>
+        <li>Guardrails: prompt injection (treat untrusted content as data, never instructions), tool permissioning, sandboxing, human approval for irreversible actions.</li>
+        <li>Cost and latency: prompt caching, model routing (cheap model for easy steps).</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship → Project 5</span>Add tracing plus a ~30-case eval suite to your Phase 4 agent. Deliberately break it — ambiguous requests, adversarial inputs, failing tools — measure, fix, re-measure. Write an <code>EVALS.md</code> documenting the before/after numbers. This document impresses interviewers more than the agent itself.</div>
+      <div class="chk"><span class="lbl">Checkpoint — you can</span>Explain LLM-as-judge and its pitfalls · describe a prompt-injection attack against your own agent and how you mitigated it.</div>
+      <div class="mats"><span class="lbl">Materials</span>
+        <ul>
+          <li><span class="verb">work</span><span class="mb"><a href="https://docs.langchain.com/langsmith">LangSmith</a> · <a href="https://langfuse.com/docs">Langfuse</a> <span class="note">— both have solid evaluation guides; pick one and instrument</span></span></li>
+          <li><span class="verb">do</span><span class="mb"><a href="https://www.deeplearning.ai/short-courses/">A DeepLearning.AI agent-evaluation short course</a> <span class="note">— audit free</span></span></li>
+          <li><span class="verb">read</span><span class="mb"><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> <span class="note">— the threat catalogue your guardrails answer</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ph-6 -->
+    <article class="phase sh">
+      <div class="ph-top">
+        <span class="tag n">ph-6</span><span class="tag a">track A</span><span class="tag b">track B</span><span class="tag c">track C</span>
+        <span class="wks">weeks 12–14</span>
+      </div>
+      <h3>Capstone &amp; career packaging</h3>
+      <p class="goal">One substantial, deployed, documented project plus a portfolio that gets interviews — ideally in a domain you already know, because domain knowledge + agents is your edge over CS grads.</p>
+      <span class="sub">Pick one capstone</span>
+      <ul class="learn">
+        <li>Customer-support agent over a product's docs, with escalation/handoff logic.</li>
+        <li>Personal ops agent: email triage → drafted replies, calendar-aware.</li>
+        <li>Data-analysis agent: CSV in → cleaned data, charts, and a written report out.</li>
+        <li>Code-review or documentation agent for a GitHub repository.</li>
+      </ul>
+      <div class="ship"><span class="lbl">Ship → The bar that reads as "professional"</span>Deployed: a FastAPI backend + minimal web UI, or a Slack/Discord bot · a README with an architecture diagram and a "why these design choices" section · an eval-results table and example traces · a 2–3 minute demo video · costs documented — what do 1,000 requests cost?</div>
+      <span class="sub">Career moves — run in parallel</span>
+      <ul class="learn">
+        <li>Pin your 3 best repos; polish every README.</li>
+        <li>Write 2–3 posts (LinkedIn or a blog): "What I learned building X" — hiring managers genuinely read these.</li>
+        <li>Target titles: AI Engineer · Agent Engineer · Forward-Deployed Engineer · Solutions Engineer (AI) · LLM Application Developer.</li>
+        <li>Interview prep themes: agent-vs-workflow design decisions, cost/latency tradeoffs, eval design, failure modes, RAG design, "how would you build X" system design.</li>
+        <li>Make one small open-source contribution to an agent tool (docs PRs count) — great interview conversation material.</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- ================= §4 RESOURCE LIBRARY ================= -->
+  <section class="sec" id="library">
+    <div class="sec-head"><span class="sec-no">§4</span><h2>Resource library</h2></div>
+    <div class="beyond">
+      <div class="bx">
+        <h3>Official docs — bookmark all four</h3>
+        <ul>
+          <li><a href="https://docs.claude.com">Anthropic API</a></li>
+          <li><a href="https://platform.openai.com/docs">OpenAI</a></li>
+          <li><a href="https://langchain-ai.github.io/langgraph/">LangGraph</a></li>
+          <li><a href="https://modelcontextprotocol.io">MCP</a></li>
+        </ul>
+      </div>
+      <div class="bx">
+        <h3>Free structured courses</h3>
+        <ul>
+          <li><a href="https://anthropic.skilljar.com">Anthropic Academy</a> <span class="note">— free certificated courses on the Claude API, MCP, Claude Code, Skills, and subagents (hub: <a href="https://www.anthropic.com/learn">anthropic.com/learn</a>)</span></li>
+          <li><a href="https://huggingface.co/learn/agents-course">Hugging Face AI Agents Course</a></li>
+          <li><a href="https://academy.langchain.com">LangChain Academy — Introduction to LangGraph</a></li>
+          <li><a href="https://www.deeplearning.ai/short-courses/">DeepLearning.AI short courses</a> <span class="note">— free to audit</span></li>
+          <li>Google/Kaggle 5-Day AI Agents Intensive <span class="note">— free, runs periodically; watch for the next cohort</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <span class="sub">Essential reads — in this order</span>
+    <div class="refs">
+      <ol>
+        <li><a href="https://www.anthropic.com/research/building-effective-agents">Building Effective Agents</a> — Anthropic. <span class="src">The workflow-vs-agent map everything else builds on.</span></li>
+        <li><a href="https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf">A Practical Guide to Building Agents</a> — OpenAI. <span class="src">Free PDF.</span></li>
+        <li><a href="https://www.anthropic.com/engineering">Anthropic engineering blog</a>. <span class="src">The context-engineering and tool-writing posts.</span></li>
+        <li><a href="https://github.com/humanlayer/12-factor-agents">12-Factor Agents</a>. <span class="src">Principles for production-grade agents.</span></li>
+        <li><a href="https://lilianweng.github.io/posts/2023-06-23-agent/">LLM Powered Autonomous Agents</a> — L. Weng.</li>
+        <li><a href="https://huyenchip.com/books/">AI Engineering</a> — C. Huyen (O'Reilly). <span class="src">The book worth buying.</span></li>
+      </ol>
+    </div>
+
+    <div class="beyond" style="margin-top:22px">
+      <div class="bx">
+        <h3>Papers — optional, skim for interviews</h3>
+        <ul>
+          <li><a href="https://arxiv.org/abs/2210.03629">ReAct</a> <span class="note">— arXiv 2210.03629</span></li>
+          <li><a href="https://arxiv.org/abs/2303.11366">Reflexion</a> <span class="note">— arXiv 2303.11366</span></li>
+          <li><a href="https://arxiv.org/abs/2302.04761">Toolformer</a> <span class="note">— arXiv 2302.04761</span></li>
+        </ul>
+      </div>
+      <div class="bx">
+        <h3>Staying current — 30 min/week, no more</h3>
+        <ul>
+          <li><a href="https://simonwillison.net">Simon Willison's blog</a></li>
+          <li><a href="https://www.latent.space">Latent Space newsletter/podcast</a></li>
+          <li>Release notes of whatever framework you're using that week</li>
+        </ul>
+      </div>
+      <div class="converge"><strong>Tools you'll touch along the way:</strong> Anthropic/OpenAI Python SDKs · <code>Pydantic</code> · <code>httpx</code> · <code>Chroma</code> · <code>LangGraph</code> · MCP Python SDK · LangSmith or Langfuse · <code>FastAPI</code> · <code>uv</code> · Git</div>
+    </div>
+  </section>
+
+  <!-- ================= §5 TUTOR LOOP ================= -->
+  <section class="sec" id="tutor">
+    <div class="sec-head"><span class="sec-no">§5</span><h2>How we'll work together</h2></div>
+    <p class="beyond-intro" style="font-size:15px;color:#3D4854;margin-bottom:4px">Use Claude as your always-available tutor. A cadence that works:</p>
+    <ul class="rules" style="margin-top:8px;margin-bottom:20px">
+      <li><strong>Start of each week.</strong> "I'm on Week N of my agent roadmap — teach me [topic]." Claude explains it, checks your understanding, and sets the exercise.</li>
+      <li><strong>Mid-week.</strong> Paste your code and ask for a review — critiqued like a senior engineer would: bugs, design, style.</li>
+      <li><strong>Stuck for more than ~30 minutes?</strong> Bring the error and what you've tried. (Struggle a little first; that's where the learning lives.)</li>
+      <li><strong>End of each week.</strong> "Quiz me on Week N's checkpoint" before moving on.</li>
+    </ul>
+    <div class="converge"><strong>One honest warning from your tutor:</strong> let AI <em>explain</em> and <em>review</em>, but type the code yourself through at least Phase 3. If Claude writes your agent loop for you, you'll freeze when an interviewer asks you to whiteboard it.</div>
+  </section>
+
+  <!-- ================= §6 PROGRESS TRACKER ================= -->
+  <section class="sec" id="tracker">
+    <div class="sec-head"><span class="sec-no">§6</span><h2>Progress tracker</h2></div>
+    <div class="grp">
+      <h3>Track A — fundamentals &amp; the loop</h3>
+      <label><input type="checkbox"> Week 1 — <code>hello-agent</code> repo live on GitHub</label>
+      <label><input type="checkbox"> Week 3 — Project 1: CLI chat assistant</label>
+      <label><input type="checkbox"> Week 5 — Project 2: from-scratch research agent</label>
+      <label><input type="checkbox"> Week 6 — Project 3: chat-with-your-docs</label>
+    </div>
+    <div class="grp gb">
+      <h3>Track B — frameworks &amp; MCP</h3>
+      <label><input type="checkbox"> Week 9 — Project 4: LangGraph rebuild + custom MCP server</label>
+    </div>
+    <div class="grp gc">
+      <h3>Track C — reliability &amp; shipping</h3>
+      <label><input type="checkbox"> Week 11 — Project 5: eval suite + tracing, <code>EVALS.md</code> written</label>
+      <label><input type="checkbox"> Week 14 — Capstone deployed, demo video recorded</label>
+      <label><input type="checkbox"> Portfolio — READMEs polished, 2+ posts published</label>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
