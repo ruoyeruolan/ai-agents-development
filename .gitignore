@@ -2,3 +2,5 @@
 .omc
 .venv
 *db
+.claude-flow
+.remember
