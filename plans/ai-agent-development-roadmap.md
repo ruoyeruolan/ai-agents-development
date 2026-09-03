@@ -14,7 +14,7 @@
 ## The map
 
 | Weeks | Phase | Theme | You ship |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 1 | 0 | Toolkit & Python leveling | "Hello, LLM" repo |
 | 2–3 | 1 | LLM & API foundations | CLI chat assistant |
 | 4–5 | 2 | Tool use & the agent loop (no framework) | Research agent from scratch |
@@ -32,16 +32,18 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 **Goal:** a professional dev setup and the specific Python you'll use constantly.
 
 **Learn / set up:**
+
 - Git + GitHub: init, commit, branch, push, write a README
 - Environments: `uv` (modern, fast) or `venv` + pip; VS Code; a `.env` file with `python-dotenv` for API keys (never commit keys)
 - Python essentials for agent work: functions and type hints, dicts/JSON handling, error handling with try/except, classes and dataclasses, Pydantic models, `async/await` basics, HTTP calls with `httpx`
 - Get an API key (Anthropic Console and/or OpenAI) and understand tokens and pricing so costs never surprise you — use the cheapest model tier while learning
 
 **Resources:**
-- Official Python tutorial for any gaps: https://docs.python.org/3/tutorial/
-- GitHub getting started: https://docs.github.com/en/get-started
-- Anthropic API getting started: https://docs.claude.com
-- Pydantic docs (just the "Models" page for now): https://docs.pydantic.dev
+
+- Official Python tutorial for any gaps: <https://docs.python.org/3/tutorial/>
+- GitHub getting started: <https://docs.github.com/en/get-started>
+- Anthropic API getting started: <https://docs.claude.com>
+- Pydantic docs (just the "Models" page for now): <https://docs.pydantic.dev>
 
 **Ship:** a repo `hello-agent` containing a script that sends a prompt to an LLM API, streams the reply to the terminal, and prints tokens used + estimated cost. README explains setup.
 
@@ -54,6 +56,7 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 **Goal:** total comfort with the raw ingredients every agent is made of.
 
 **Learn:**
+
 - Chat structure: system vs user vs assistant messages; the API is stateless, *you* manage conversation history
 - Sampling controls: temperature, max tokens; when to use temperature 0
 - Streaming responses
@@ -63,10 +66,11 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 - Intuition for what's under the hood (pick one): 3Blue1Brown's neural networks/Transformer series or Andrej Karpathy's "Intro to Large Language Models" on YouTube
 
 **Resources:**
-- Anthropic Academy — "Building with the Claude API" (free, ~8 hrs of video, certificate): https://anthropic.skilljar.com
-- Anthropic prompt engineering docs: https://docs.claude.com
-- `anthropics/courses` Jupyter notebooks (code along): https://github.com/anthropics/courses
-- DeepLearning.AI short courses, free to audit — pick one on prompting or structured output: https://www.deeplearning.ai/short-courses/
+
+- Anthropic Academy — "Building with the Claude API" (free, ~8 hrs of video, certificate): <https://anthropic.skilljar.com>
+- Anthropic prompt engineering docs: <https://docs.claude.com>
+- `anthropics/courses` Jupyter notebooks (code along): <https://github.com/anthropics/courses>
+- DeepLearning.AI short courses, free to audit — pick one on prompting or structured output: <https://www.deeplearning.ai/short-courses/>
 
 **Ship — Project 1: CLI chat assistant.** Multi-turn memory, streaming, switchable system-prompt personas, `/save` command for transcripts, and a running token/cost meter. Stretch goal: when history gets long, summarize older turns and keep the summary in context.
 
@@ -79,6 +83,7 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 **This is the heart of the entire plan.** An agent is just an LLM in a loop, with tools, working toward a goal. Build that loop yourself once and no framework will ever be magic to you.
 
 **Learn:**
+
 - Tool use (function calling): defining tool schemas, letting the model request a call, executing it in your code, returning the result to the model
 - The agent loop: call model → if it requests a tool, run it → append result → call model again → stop when the task is done or max iterations hit
 - Read **"Building Effective Agents"** (Anthropic) — twice. Internalize the core distinction: *workflows* (prompt chaining, routing, parallelization, orchestrator–workers, evaluator–optimizer) vs *agents*, and the advice to use the simplest pattern that works
@@ -86,10 +91,11 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 - Failure handling: malformed tool calls, tool errors, runaway loops, timeouts, max-iteration guards
 
 **Resources:**
-- Building Effective Agents: https://www.anthropic.com/research/building-effective-agents
-- Tool use guide + cookbook examples: https://docs.claude.com and https://github.com/anthropics/anthropic-cookbook
-- OpenAI, "A Practical Guide to Building Agents" (free PDF): https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
-- ReAct paper: https://arxiv.org/abs/2210.03629
+
+- Building Effective Agents: <https://www.anthropic.com/research/building-effective-agents>
+- Tool use guide + cookbook examples: <https://docs.claude.com> and <https://github.com/anthropics/anthropic-cookbook>
+- OpenAI, "A Practical Guide to Building Agents" (free PDF): <https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf>
+- ReAct paper: <https://arxiv.org/abs/2210.03629>
 
 **Ship — Project 2: research agent, zero frameworks.** Tools: web search (Tavily or Brave Search API have free tiers), calculator, and file read/write. It should handle questions like "Compare the populations of Japan's three largest cities and save a summary to a file." Include a max-iteration guard and print a readable trace of every step it takes.
 
@@ -102,6 +108,7 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 **Goal:** give agents knowledge they weren't trained on, and manage their limited attention.
 
 **Learn:**
+
 - Embeddings and similarity search; chunking strategies; a local vector store (Chroma is the easiest start)
 - The RAG pipeline: ingest → embed → retrieve → insert into prompt → answer with citations
 - Agentic RAG: retrieval as a *tool* the agent decides when to call
@@ -109,9 +116,10 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 - Context engineering: deciding what goes into the context window and what stays out — read Anthropic's engineering posts on effective context engineering and on writing effective tools for agents
 
 **Resources:**
-- Anthropic engineering blog (context engineering, tool-writing posts): https://www.anthropic.com/engineering
-- Chroma getting started: https://docs.trychroma.com
-- A DeepLearning.AI RAG short course (audit free): https://www.deeplearning.ai/short-courses/
+
+- Anthropic engineering blog (context engineering, tool-writing posts): <https://www.anthropic.com/engineering>
+- Chroma getting started: <https://docs.trychroma.com>
+- A DeepLearning.AI RAG short course (audit free): <https://www.deeplearning.ai/short-courses/>
 
 **Ship — Project 3: "chat with your docs."** Ingest a folder of PDFs/markdown in a domain you know well, answer questions with citations to source chunks, then plug retrieval in as a tool on your Phase 2 agent.
 
@@ -124,17 +132,19 @@ Weekly rhythm: ~60% building, ~30% courses/docs, ~10% reading and community. The
 Now that you know what frameworks abstract away, learn the ones the job market actually uses.
 
 **Learn:**
+
 - **LangGraph** (weeks 7–8) — the current production standard for stateful agent orchestration: graphs, nodes and edges, state, checkpointing/persistence, human-in-the-loop interrupts, streaming. Do LangChain Academy's free "Introduction to LangGraph."
 - **MCP — Model Context Protocol** (week 9) — the open standard for connecting agents to tools and data; think USB-C for AI integrations. Every major framework now supports it. Build a server exposing 2–3 custom tools and connect it to Claude. Anthropic Academy's MCP courses walk this end-to-end in Python, including the three primitives: tools, resources, prompts.
 - **Survey the landscape** (a half-day each, breadth for interviews): OpenAI Agents SDK, Claude Agent SDK, CrewAI, Pydantic AI. Know each one's sweet spot; you don't need mastery.
 - Multi-agent patterns: orchestrator–workers, subagents for context isolation
 
 **Resources:**
-- LangChain Academy (free): https://academy.langchain.com
-- LangGraph docs: https://langchain-ai.github.io/langgraph/
-- MCP spec and tutorials: https://modelcontextprotocol.io
-- Anthropic Academy MCP courses: https://anthropic.skilljar.com
-- Hugging Face AI Agents Course — free, beginner-to-expert, covers smolagents/LlamaIndex/LangGraph, optional certificate; good parallel track: https://huggingface.co/learn/agents-course
+
+- LangChain Academy (free): <https://academy.langchain.com>
+- LangGraph docs: <https://langchain-ai.github.io/langgraph/>
+- MCP spec and tutorials: <https://modelcontextprotocol.io>
+- Anthropic Academy MCP courses: <https://anthropic.skilljar.com>
+- Hugging Face AI Agents Course — free, beginner-to-expert, covers smolagents/LlamaIndex/LangGraph, optional certificate; good parallel track: <https://huggingface.co/learn/agents-course>
 
 **Ship — Project 4a:** rebuild your research agent in LangGraph with persistent checkpoints and a human-approval interrupt before any file write. **Project 4b:** a custom MCP server for something personal — your notes, a hobby API, your work domain. MCP servers make excellent portfolio pieces because other people can actually plug them into their own agents.
 
@@ -147,6 +157,7 @@ Now that you know what frameworks abstract away, learn the ones the job market a
 **The career differentiator.** Demos are easy; reliability is what gets hired.
 
 **Learn:**
+
 - Tracing: instrument your agent with LangSmith (free tier, deepest LangGraph integration) or Langfuse (open-source, self-hostable) so you can see every step, token, and dollar
 - Building an eval set: 25–50 real test cases with expected outcomes, graded by exact match, rubric, or LLM-as-judge
 - Regression testing: re-run evals on every prompt or model change; track pass rates over time
@@ -155,9 +166,10 @@ Now that you know what frameworks abstract away, learn the ones the job market a
 - Cost and latency: prompt caching, model routing (cheap model for easy steps)
 
 **Resources:**
-- LangSmith: https://docs.langchain.com/langsmith · Langfuse: https://langfuse.com/docs — both have solid evaluation guides
+
+- LangSmith: <https://docs.langchain.com/langsmith> · Langfuse: <https://langfuse.com/docs> — both have solid evaluation guides
 - A DeepLearning.AI agent-evaluation short course (audit free)
-- OWASP Top 10 for LLM Applications: https://owasp.org/www-project-top-10-for-large-language-model-applications/
+- OWASP Top 10 for LLM Applications: <https://owasp.org/www-project-top-10-for-large-language-model-applications/>
 
 **Ship — Project 5:** add tracing plus a ~30-case eval suite to your Phase 4 agent. Deliberately break it — ambiguous requests, adversarial inputs, failing tools — measure, fix, re-measure. Write an `EVALS.md` documenting the before/after numbers. This document impresses interviewers more than the agent itself.
 
@@ -170,12 +182,14 @@ Now that you know what frameworks abstract away, learn the ones the job market a
 **Goal:** one substantial, deployed, documented project plus a portfolio that gets interviews.
 
 **Pick ONE capstone, ideally in a domain you already know** (domain knowledge + agents is your edge over CS grads):
+
 1. Customer-support agent over a product's docs, with escalation/handoff logic
 2. Personal ops agent: email triage → drafted replies, calendar-aware
 3. Data-analysis agent: CSV in → cleaned data, charts, and a written report out
 4. Code-review or documentation agent for a GitHub repository
 
 **The bar that reads as "professional":**
+
 - Deployed: FastAPI backend + minimal web UI, or a Slack/Discord bot
 - README with an architecture diagram and a "why these design choices" section
 - Eval results table and example traces
@@ -183,6 +197,7 @@ Now that you know what frameworks abstract away, learn the ones the job market a
 - Costs documented: what do 1,000 requests cost?
 
 **Career moves (run in parallel):**
+
 - Pin your 3 best repos; polish every README
 - Write 2–3 posts (LinkedIn or a blog): "What I learned building X" — hiring managers genuinely read these
 - Target titles: AI Engineer, Agent Engineer, Forward-Deployed Engineer, Solutions Engineer (AI), LLM Application Developer
@@ -194,31 +209,35 @@ Now that you know what frameworks abstract away, learn the ones the job market a
 ## Resource library (your organized materials)
 
 **Official docs — bookmark all four:**
-- Anthropic API: https://docs.claude.com
-- OpenAI: https://platform.openai.com/docs
-- LangGraph: https://langchain-ai.github.io/langgraph/
-- MCP: https://modelcontextprotocol.io
+
+- Anthropic API: <https://docs.claude.com>
+- OpenAI: <https://platform.openai.com/docs>
+- LangGraph: <https://langchain-ai.github.io/langgraph/>
+- MCP: <https://modelcontextprotocol.io>
 
 **Free structured courses:**
-- Anthropic Academy — free certificated courses on the Claude API, MCP, Claude Code, Skills, and subagents: https://anthropic.skilljar.com (hub: https://www.anthropic.com/learn)
-- Hugging Face AI Agents Course: https://huggingface.co/learn/agents-course
-- LangChain Academy — Introduction to LangGraph: https://academy.langchain.com
-- DeepLearning.AI short courses (free to audit): https://www.deeplearning.ai/short-courses/
+
+- Anthropic Academy — free certificated courses on the Claude API, MCP, Claude Code, Skills, and subagents: <https://anthropic.skilljar.com> (hub: <https://www.anthropic.com/learn>)
+- Hugging Face AI Agents Course: <https://huggingface.co/learn/agents-course>
+- LangChain Academy — Introduction to LangGraph: <https://academy.langchain.com>
+- DeepLearning.AI short courses (free to audit): <https://www.deeplearning.ai/short-courses/>
 - Google/Kaggle 5-Day AI Agents Intensive — free, runs periodically; watch for the next cohort
 
 **Essential reads, in this order:**
-1. *Building Effective Agents* — Anthropic: https://www.anthropic.com/research/building-effective-agents
+
+1. *Building Effective Agents* — Anthropic: <https://www.anthropic.com/research/building-effective-agents>
 2. *A Practical Guide to Building Agents* — OpenAI (PDF)
-3. Anthropic engineering blog: the context-engineering and tool-writing posts — https://www.anthropic.com/engineering
-4. *12-Factor Agents* — principles for production-grade agents: https://github.com/humanlayer/12-factor-agents
-5. Lilian Weng, *LLM Powered Autonomous Agents*: https://lilianweng.github.io/posts/2023-06-23-agent/
+3. Anthropic engineering blog: the context-engineering and tool-writing posts — <https://www.anthropic.com/engineering>
+4. *12-Factor Agents* — principles for production-grade agents: <https://github.com/humanlayer/12-factor-agents>
+5. Lilian Weng, *LLM Powered Autonomous Agents*: <https://lilianweng.github.io/posts/2023-06-23-agent/>
 6. Book worth buying: *AI Engineering* by Chip Huyen (O'Reilly)
 
 **Papers (optional, skim for interviews):** ReAct (arxiv 2210.03629) · Reflexion (2303.11366) · Toolformer (2302.04761)
 
 **Staying current — 30 min/week, no more:**
-- Simon Willison's blog: https://simonwillison.net
-- Latent Space newsletter/podcast: https://www.latent.space
+
+- Simon Willison's blog: <https://simonwillison.net>
+- Latent Space newsletter/podcast: <https://www.latent.space>
 - Release notes of whatever framework you're using that week
 
 **Tools you'll touch along the way:** Anthropic/OpenAI Python SDKs · Pydantic · httpx · Chroma · LangGraph · MCP Python SDK · LangSmith or Langfuse · FastAPI · uv · Git
