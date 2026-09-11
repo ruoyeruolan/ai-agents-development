@@ -37,9 +37,11 @@ months later, re-verify tools and links._
 - Weeks 12–14 (Phase 6): Capstone & career packaging — deployed capstone +
   portfolio
 
-Weekly rhythm: about 60% building, about 30% courses/docs, about 10% reading and community. The
+Weekly rhythm: about 60% building, about 30% courses/docs, about 10% reading
+and community. The
 phases matter more than the week numbers — at a steady 10 hrs/week this
-stretches to about 17 weeks, at 20 hrs/week some phases compress. Don't skip Phase 2
+stretches to about 17 weeks, at 20 hrs/week some phases compress. Don't skip
+Phase 2
 or 5 no matter what.
 
 ---
