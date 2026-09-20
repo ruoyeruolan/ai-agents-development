@@ -1,5 +1,5 @@
-[submodule "resources/courses"]
-	path = resources/courses
+[submodule "resources/anthropic-courses"]
+	path = resources/anthropic-courses
 	url = https://github.com/anthropics/courses.git
 [submodule "resources/MultiAgent-Search"]
 	path = resources/MultiAgent-Search

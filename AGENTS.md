@@ -9,7 +9,7 @@ This repository tracks hands-on AI agent study through standalone Python scripts
   preserve existing paths.
 - `plans/ai-agent-development-roadmap.md` defines learning order and deliverables.
   Its HTML companion is maintained separately, without a generator.
-- `resources/courses/` is the `anthropics/courses` submodule containing reference
+- `resources/anthropic-courses/` is the `anthropics/courses` submodule containing reference
   notebooks and assets. Keep personal exercises in `practice/`.
 - `pyproject.toml` and `uv.lock` manage dependencies; `.python-version` pins 3.13.
 

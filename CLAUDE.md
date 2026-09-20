@@ -68,7 +68,7 @@ kwargs. Keep them when editing it.
   (bespoke CSS, no generator) frozen at commit `1cab741`, 5 later commits behind the `.md`.
 - `practice/<phase>/` — the scripts. **Naming is inconsistent: `Phase0/` vs `phase01/`.** Use the
   newer lowercase zero-padded form for new dirs; don't silently rename the old one.
-- `resources/courses/` — submodule of `anthropics/courses` (reference notebooks; their deps are not
+- `resources/anthropic-courses/` — submodule of `anthropics/courses` (reference notebooks; their deps are not
   in this lockfile).
 - `README.md` is empty (0 bytes) — an open Phase 0 item.
 
