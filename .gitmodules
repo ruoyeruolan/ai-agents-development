@@ -4,3 +4,6 @@
 [submodule "resources/MultiAgent-Search"]
 	path = resources/MultiAgent-Search
 	url = https://github.com/jayergood/MultiAgent-Search.git
+[submodule "resources/mini-swe-agent"]
+	path = resources/mini-swe-agent
+	url = https://github.com/swe-agent/mini-swe-agent.git
