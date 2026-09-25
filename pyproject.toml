@@ -24,3 +24,4 @@ dependencies = [
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+exclude = ["resources"]
