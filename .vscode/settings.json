@@ -1,0 +1,4 @@
+{
+  "python.analysis.exclude": ["resources/**"],
+  "python.analysis.ignore": ["resources/**"]
+}
