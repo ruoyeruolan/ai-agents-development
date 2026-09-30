@@ -1,6 +1,7 @@
 import os
-import anthropic
 from pathlib import Path
+
+import anthropic
 from dotenv import load_dotenv
 
 load_dotenv(Path.home() / ".secrets")
