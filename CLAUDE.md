@@ -4,9 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A personal study repo for learning AI agent development. There is no application, no package to
-build, and no tests. The deliverable is **practice scripts written by hand while working through a
-roadmap**.
+A personal study repo for learning AI agent development. Source packages group
+exercises by topic and are installed in editable mode by `uv sync`. There is no
+automated test suite. The deliverable is **practice scripts written by hand while
+working through a roadmap**.
 
 `plans/ai-agent-development-roadmap.md` is the source of truth for what gets built next. Phases 0–6,
 each of Phases 0–5 with a **Ship** deliverable and a **Checkpoint** (Phase 6 is capstone + career
@@ -18,16 +19,20 @@ Default to a skeleton with TODOs, a review of code they wrote, or a checkpoint q
 implementation only when explicitly asked.
 
 **No frameworks before Phase 4.** Phases 0–3 are raw SDK calls and hand-rolled loops on purpose;
-LangGraph and MCP enter at Phase 4. Do not introduce LangChain/LangGraph/CrewAI into `phase01`-era code.
+LangGraph and MCP enter at Phase 4. Do not introduce LangChain/LangGraph/CrewAI
+into the introductory `apis` and `tool` exercises.
 
 ## Commands
 
 ```bash
+# install dependencies and the local packages in editable mode
+uv sync
+
 # syntax-check an edit — the ONLY free verification that exists here
-uv run python -m py_compile practice/phase01/<script>.py
+uv run python -m py_compile src/apis/<script>.py
 
 # run a script (from repo root) — MAKES A LIVE, BILLED API CALL
-uv run python practice/phase01/demo.py
+uv run python src/apis/demo.py
 
 # submodule, needed only on a fresh clone
 git submodule update --init --recursive
@@ -49,16 +54,16 @@ no script reads.
 `~/.secrets` defines `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL`,
 `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`.
 
-**Everything routes through a proxy gateway, including `demo.py`.** The five `phase01` tool scripts
+**Everything routes through a proxy gateway, including `demo.py`.** The five `apis` tool scripts
 build `anthropic.Anthropic(auth_token=..., base_url=...)` explicitly. `demo.py` passes only
 `api_key=` — but the SDK falls back to `ANTHROPIC_BASE_URL` from the environment
 (`anthropic/_client.py:225`), so it reaches the same gateway. Models are `"deepseek-v4-pro[1m]"`
-(`calender.py`, `agentic-loop.py`, `multi-tools-parallel-calls.py`, `parallel-too-call-weather.py`),
-plain `"deepseek-v4-pro"` (`tool-runner-sdk.py`, `Phase0/hello-agent.py`), and `"claude-sonnet-4-6"`
+(`calender.py`, `agentic_loop.py`, `multi_tools_parallel_calls.py`, `parallel_too_call_weather.py`),
+plain `"deepseek-v4-pro"` (`tool_runner_sdk.py`, `basics/hello_agent.py`), and `"claude-sonnet-4-6"`
 (`demo.py`). Anthropic-SDK code against DeepSeek models is deliberate — the roadmap says develop on
 the cheapest tier.
 
-`Phase0/hello-agent.py` is the one OpenAI-SDK script. It passes `reasoning_effort="high"` and
+`basics/hello_agent.py` is the one OpenAI-SDK script. It passes `reasoning_effort="high"` and
 `extra_body={"thinking": {"type": "enabled"}}` — DeepSeek-gateway extensions, not portable OpenAI
 kwargs. Keep them when editing it.
 
@@ -66,24 +71,29 @@ kwargs. Keep them when editing it.
 
 - `plans/` — the roadmap. The `.md` is live. The `.html` is a **hand-authored, stale** rendering
   (bespoke CSS, no generator) frozen at commit `1cab741`, 5 later commits behind the `.md`.
-- `practice/<phase>/` — the scripts. **Naming is inconsistent: `Phase0/` vs `phase01/`.** Use the
-  newer lowercase zero-padded form for new dirs; don't silently rename the old one.
+- `src/basics/`, `src/apis/`, `src/tool/`, and `src/rag/` — topic-based Python
+  packages with lightweight `__init__.py` files. Use lowercase snake_case names.
+  `tool` keeps symbolic links to matching implementations in `apis`.
+- `src/config/` — shared configuration. Use `uv run python -m rag.embedding`
+  from the repo root. Setuptools discovers source packages and `uv` installs them
+  in editable mode, enabling cross-package imports without `PYTHONPATH`.
+  Pyright also searches `src/`.
 - `resources/anthropic-courses/` — submodule of `anthropics/courses` (reference notebooks; their deps are not
   in this lockfile).
 - `README.md` is empty (0 bytes) — an open Phase 0 item.
 
-## What each phase01 script teaches
+## What each apis script teaches
 
 | Script | Concept |
 |---|---|
 | `demo.py` | bare `messages.create` smoke test, no tools (16 lines) |
 | `calender.py` | **Ring 1** — one tool, one turn: single `tool_use`, one manual `tool_result` follow-up, no loop |
-| `agentic-loop.py` | hand-rolled `while` loop over one tool + strict post-loop `stop_reason` validation (incl. an explicit `max_tokens` check) |
-| `multi-tools-parallel-calls.py` | **Ring 3** — several tools, all `tool_use` blocks per turn, per-tool `is_error` results, turn logging |
-| `parallel-too-call-weather.py` | observing parallel tool calls with two toy tools, one round-trip |
-| `tool-runner-sdk.py` | the Ring 3 scenario via `@beta_tool` + `client.beta.messages.tool_runner(...).until_done()` — an A/B against the manual loop (66 lines vs 172) |
+| `agentic_loop.py` | hand-rolled `while` loop over one tool + strict post-loop `stop_reason` validation (incl. an explicit `max_tokens` check) |
+| `multi_tools_parallel_calls.py` | **Ring 3** — several tools, all `tool_use` blocks per turn, per-tool `is_error` results, turn logging |
+| `parallel_too_call_weather.py` | observing parallel tool calls with two toy tools, one round-trip |
+| `tool_runner_sdk.py` | the Ring 3 scenario via `@beta_tool` + `client.beta.messages.tool_runner(...).until_done()` — an A/B against the manual loop (66 lines vs 172) |
 
-Only `calender.py` and `multi-tools-parallel-calls.py` actually carry a `# Ring N:` header — there is
+Only `calender.py` and `multi_tools_parallel_calls.py` actually carry a `# Ring N:` header — there is
 no Ring 2 anywhere, and "Ring" never appears in the roadmap. Worth continuing on new tool-use
 scripts, and backfilling the gaps is in scope.
 
@@ -95,12 +105,12 @@ the lesson.
 
 ## House style for a new practice script
 
-The pattern is `calender.py`, `agentic-loop.py`, and `multi-tools-parallel-calls.py`. The other three
-are deliberate outliers — `demo.py` (no-tool smoke test), `parallel-too-call-weather.py` (pasted
-tutorial code: untyped `tools`, `✓`/`✗` markers), `tool-runner-sdk.py` (the SDK counter-example).
+The pattern is `calender.py`, `agentic_loop.py`, and `multi_tools_parallel_calls.py`. The other three
+are deliberate outliers — `demo.py` (no-tool smoke test), `parallel_too_call_weather.py` (pasted
+tutorial code: untyped `tools`, `✓`/`✗` markers), `tool_runner_sdk.py` (the SDK counter-example).
 
 - Flat top-level procedural script. No `if __name__ == "__main__":`, no `main()`, no argparse. Sync
-  only, no `async`. Lowercase kebab-case filenames.
+  only, no `async`. Lowercase snake_case module filenames.
 - `load_dotenv(Path.home() / ".secrets")` right after imports, then `os.environ.get(...)`.
 - Tools inline as `tools: List[ToolParam] = [...]` with hand-written JSON Schema — not Pydantic, not
   helpers. Dispatch through one `run_tool(name, tool_input)` with a flat `if name == ...` chain
@@ -110,13 +120,13 @@ tutorial code: untyped `tools`, `✓`/`✗` markers), `tool-runner-sdk.py` (the 
   Serialize results with `json.dumps(result)`.
 - After the loop, `raise RuntimeError` on any `stop_reason` but `end_turn`. Return tool failures to
   the model as `{"type": "tool_result", ..., "is_error": True}` rather than crashing.
-- Hoist the token cap: `MAX_OUTPUT_TOKENS = 10240` for new loops (`multi-tools-parallel-calls.py`
+- Hoist the token cap: `MAX_OUTPUT_TOKENS = 10240` for new loops (`multi_tools_parallel_calls.py`
   spells it `MAX_TOKEN`; the single-turn scripts just pass `max_tokens=1024` inline).
 - Heavy `#` comments explaining each block — this is teaching code, comments always in English.
   Docstrings only where load-bearing (`@beta_tool`, where the SDK parses them into the schema).
-- `print(..., flush=True)` when writing a step trace (only `multi-tools-parallel-calls.py` does this
+- `print(..., flush=True)` when writing a step trace (only `multi_tools_parallel_calls.py` does this
   today, and it is the model to copy) — never `logging`.
-- **`agentic-loop.py` raises its `RuntimeError` messages in Chinese; `multi-tools-parallel-calls.py`
+- **`agentic_loop.py` raises its `RuntimeError` messages in Chinese; `multi_tools_parallel_calls.py`
   raises the same conditions in English. That is not an encoding bug — leave it.** Use English in new code.
 
 If asked to write a new loop: the roadmap mandates a **max-iteration guard and a printed trace**
@@ -124,11 +134,11 @@ If asked to write a new loop: the roadmap mandates a **max-iteration guard and a
 
 ## Gotchas
 
-- Two tracked *filenames* carry typos and are the real paths: `calender.py` (calendar) and
-  `parallel-too-call-weather.py` (tool). Don't rename them incidentally.
+- Two module filenames retain historical spelling: `calender.py` (calendar) and
+  `parallel_too_call_weather.py` (tool). Don't rename them incidentally.
 - Two genuine bugs, worth flagging rather than copying: `calender.py` re-sends the first user turn to
   the follow-up call with the address mistyped `@gmial.com` (the original used `@gmail.com`), so the
-  replayed history diverges; and `multi-tools-parallel-calls.py`'s `run_tool` unknown-tool branch says
+  replayed history diverges; and `multi_tools_parallel_calls.py`'s `run_tool` unknown-tool branch says
   `return ValueError(...)` where it means `raise` — it only appears to work because `json.dumps` then
   throws into the enclosing `except`.
 - `.python-version` pins `3.13` while `pyproject.toml` says `requires-python = ">=3.12.4"`. The venv
@@ -149,7 +159,7 @@ If asked to write a new loop: the roadmap mandates a **max-iteration guard and a
 ## Open roadmap items
 
 Nothing in the progress tracker (L258–265) is ticked. The code on disk has already reached Phase 2
-material (agent loop, multi-tool, error handling) while still living in `phase01/`. Unshipped: Phase
+material (agent loop, multi-tool, error handling) in `src/apis/` and `src/tool/`. Unshipped: Phase
 1's **CLI chat assistant** (multi-turn memory, streaming, personas, `/save`, token/cost meter), Phase
 2's **research agent** (web search + calculator + file I/O, max-iteration guard, readable trace), and
 Phase 0's streaming + cost print in `hello-agent.py` plus a non-empty root README.

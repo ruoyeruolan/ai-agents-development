@@ -4,34 +4,38 @@
 
 This repository tracks hands-on AI agent study through standalone Python scripts.
 
-- `practice/Phase0/` and `practice/phase01/` contain SDK and tool-use exercises.
-  Use lowercase, zero-padded directories such as `phase02/` for new phases;
-  preserve existing paths.
+- `src/basics/`, `src/apis/`, `src/tool/`, and `src/rag/` contain
+  introductory, API, tool-use, and RAG exercises. Use descriptive, lowercase
+  package names and underscores between words; add an `__init__.py`.
+- `src/config/` holds shared configuration. `src/tool/` contains symbolic
+  links to implementations in `src/apis/`; keep their targets valid.
 - `plans/ai-agent-development-roadmap.md` defines learning order and deliverables.
   Its HTML companion is maintained separately, without a generator.
-- `resources/anthropic-courses/` is the `anthropics/courses` submodule containing reference
-  notebooks and assets. Keep personal exercises in `practice/`.
+- `resources/anthropic-courses/` is the `anthropics/courses` submodule containing
+  reference notebooks and assets. Keep personal exercises in `src/`.
 - `pyproject.toml` and `uv.lock` manage dependencies; `.python-version` pins 3.13.
 
 ## Build, Test, and Development Commands
 
 Run commands from the repository root:
 
-- `uv sync`: install locked dependencies into `.venv`.
+- `uv sync`: install dependencies and the project in editable mode into `.venv`.
 - `git submodule update --init --recursive`: fetch course references after cloning.
-- `uv run python -m py_compile practice/phase01/tool-runner-sdk.py`: check syntax
+- `uv run python -m py_compile src/apis/tool_runner_sdk.py`: check syntax
   without executing the script.
-- `uv run python practice/phase01/demo.py`: run an exercise against the configured
+- `uv run python src/apis/demo.py`: run an exercise against the configured
   API; this makes a live, potentially billed request.
+- `uv run python -m rag.embedding`: run as an installed module. Editable
+  installation enables cross-package imports without setting `PYTHONPATH`.
 - `npx --yes markdownlint-cli2 AGENTS.md plans/ai-agent-development-roadmap.md`:
   check Markdown formatting using the external CLI.
 
-There is no application build command.
+Setuptools discovers packages under `src/`; `uv` installs them automatically.
 
 ## Coding Style & Naming Conventions
 
 Use four-space indentation, `snake_case` functions and variables, uppercase
-constants, and lowercase kebab-case script filenames. Follow nearby synchronous,
+constants, and lowercase snake_case module filenames. Follow nearby synchronous,
 procedural examples with explicit tool schemas, type hints, and English teaching
 comments. No Python formatter is configured. Preserve the roadmap's unwrapped
 paragraphs and file-local `MD013` exemption for adaptive editor wrapping.

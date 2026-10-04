@@ -5,3 +5,6 @@
 .claude-flow
 .remember
 __pycache__/
+*.egg-info/
+build/
+dist/
