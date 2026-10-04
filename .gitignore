@@ -4,3 +4,4 @@
 *db
 .claude-flow
 .remember
+__pycache__/
