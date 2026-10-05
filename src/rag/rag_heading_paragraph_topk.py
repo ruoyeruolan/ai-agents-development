@@ -1,3 +1,1 @@
-from config import client, SOURCE_PATH
-
-print(SOURCE_PATH)
+from config import SOURCE_PATH, client

@@ -1,1 +1,1 @@
-../apis/memory_tool.py
+../demo/apis/memory_tool.py

@@ -20,7 +20,7 @@ implementation only when explicitly asked.
 
 **No frameworks before Phase 4.** Phases 0–3 are raw SDK calls and hand-rolled loops on purpose;
 LangGraph and MCP enter at Phase 4. Do not introduce LangChain/LangGraph/CrewAI
-into the introductory `apis` and `tool` exercises.
+into the introductory `demo.apis` and `tool` exercises.
 
 ## Commands
 
@@ -29,10 +29,10 @@ into the introductory `apis` and `tool` exercises.
 uv sync
 
 # syntax-check an edit — the ONLY free verification that exists here
-uv run python -m py_compile src/apis/<script>.py
+uv run python -m py_compile src/demo/apis/<script>.py
 
 # run a script (from repo root) — MAKES A LIVE, BILLED API CALL
-uv run python src/apis/demo.py
+uv run python src/demo/apis/demo.py
 
 # submodule, needed only on a fresh clone
 git submodule update --init --recursive
@@ -54,7 +54,7 @@ no script reads.
 `~/.secrets` defines `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL`,
 `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`.
 
-**Everything routes through a proxy gateway, including `demo.py`.** The five `apis` tool scripts
+**Everything routes through a proxy gateway, including `demo.py`.** The five `demo.apis` tool scripts
 build `anthropic.Anthropic(auth_token=..., base_url=...)` explicitly. `demo.py` passes only
 `api_key=` — but the SDK falls back to `ANTHROPIC_BASE_URL` from the environment
 (`anthropic/_client.py:225`), so it reaches the same gateway. Models are `"deepseek-v4-pro[1m]"`
@@ -71,9 +71,9 @@ kwargs. Keep them when editing it.
 
 - `plans/` — the roadmap. The `.md` is live. The `.html` is a **hand-authored, stale** rendering
   (bespoke CSS, no generator) frozen at commit `1cab741`, 5 later commits behind the `.md`.
-- `src/basics/`, `src/apis/`, `src/tool/`, and `src/rag/` — topic-based Python
+- `src/basics/`, `src/demo/apis/`, `src/tool/`, and `src/rag/` — topic-based Python
   packages with lightweight `__init__.py` files. Use lowercase snake_case names.
-  `tool` keeps symbolic links to matching implementations in `apis`.
+  `tool` keeps symbolic links to matching implementations in `demo.apis`.
 - `src/config/` — shared configuration. Use `uv run python -m rag.embedding`
   from the repo root. Setuptools discovers source packages and `uv` installs them
   in editable mode, enabling cross-package imports without `PYTHONPATH`.
@@ -82,7 +82,7 @@ kwargs. Keep them when editing it.
   in this lockfile).
 - `README.md` is empty (0 bytes) — an open Phase 0 item.
 
-## What each apis script teaches
+## What each demo.apis script teaches
 
 | Script | Concept |
 |---|---|
@@ -159,7 +159,7 @@ If asked to write a new loop: the roadmap mandates a **max-iteration guard and a
 ## Open roadmap items
 
 Nothing in the progress tracker (L258–265) is ticked. The code on disk has already reached Phase 2
-material (agent loop, multi-tool, error handling) in `src/apis/` and `src/tool/`. Unshipped: Phase
+material (agent loop, multi-tool, error handling) in `src/demo/apis/` and `src/tool/`. Unshipped: Phase
 1's **CLI chat assistant** (multi-turn memory, streaming, personas, `/save`, token/cost meter), Phase
 2's **research agent** (web search + calculator + file I/O, max-iteration guard, readable trace), and
 Phase 0's streaming + cost print in `hello-agent.py` plus a non-empty root README.

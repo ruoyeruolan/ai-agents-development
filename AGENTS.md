@@ -4,11 +4,11 @@
 
 This repository tracks hands-on AI agent study through standalone Python scripts.
 
-- `src/basics/`, `src/apis/`, `src/tool/`, and `src/rag/` contain
+- `src/basics/`, `src/demo/apis/`, `src/tool/`, and `src/rag/` contain
   introductory, API, tool-use, and RAG exercises. Use descriptive, lowercase
   package names and underscores between words; add an `__init__.py`.
 - `src/config/` holds shared configuration. `src/tool/` contains symbolic
-  links to implementations in `src/apis/`; keep their targets valid.
+  links to implementations in `src/demo/apis/`; keep their targets valid.
 - `plans/ai-agent-development-roadmap.md` defines learning order and deliverables.
   Its HTML companion is maintained separately, without a generator.
 - `resources/anthropic-courses/` is the `anthropics/courses` submodule containing
@@ -21,9 +21,9 @@ Run commands from the repository root:
 
 - `uv sync`: install dependencies and the project in editable mode into `.venv`.
 - `git submodule update --init --recursive`: fetch course references after cloning.
-- `uv run python -m py_compile src/apis/tool_runner_sdk.py`: check syntax
+- `uv run python -m py_compile src/demo/apis/tool_runner_sdk.py`: check syntax
   without executing the script.
-- `uv run python src/apis/demo.py`: run an exercise against the configured
+- `uv run python src/demo/apis/demo.py`: run an exercise against the configured
   API; this makes a live, potentially billed request.
 - `uv run python -m rag.embedding`: run as an installed module. Editable
   installation enables cross-package imports without setting `PYTHONPATH`.
