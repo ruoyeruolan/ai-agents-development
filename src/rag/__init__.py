@@ -1,1 +1,1 @@
-"""Embedding, chunking, and retrieval-augmented generation exercises."""
+"""RAG exercises using shared configuration and text preprocessing helpers."""

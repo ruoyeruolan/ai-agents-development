@@ -9,6 +9,11 @@ This repository tracks hands-on AI agent study through standalone Python scripts
   package names and underscores between words; add an `__init__.py`.
 - `src/config/` holds shared configuration. `src/tool/` contains symbolic
   links to implementations in `src/demo/apis/`; keep their targets valid.
+- `src/preprocess/text/` provides pure paragraph, heading, and heading-plus-paragraph
+  splitters. RAG scripts read files and pass text and source names to these helpers.
+- `src/rag/settings.py` shares prompts and roadmap questions across RAG experiments.
+  Model names, output token limits, and API credentials are managed in `src/config/`.
+- `src/models/embedding.py` contains the introductory embedding and retrieval demo.
 - `plans/ai-agent-development-roadmap.md` defines learning order and deliverables.
   Its HTML companion is maintained separately, without a generator.
 - `resources/anthropic-courses/` is the `anthropics/courses` submodule containing
@@ -25,7 +30,7 @@ Run commands from the repository root:
   without executing the script.
 - `uv run python src/demo/apis/demo.py`: run an exercise against the configured
   API; this makes a live, potentially billed request.
-- `uv run python -m rag.embedding`: run as an installed module. Editable
+- `uv run python -m models.embedding`: run as an installed module. Editable
   installation enables cross-package imports without setting `PYTHONPATH`.
 - `npx --yes markdownlint-cli2 AGENTS.md plans/ai-agent-development-roadmap.md`:
   check Markdown formatting using the external CLI.
@@ -45,7 +50,8 @@ paragraphs and file-local `MD013` exemption for adaptive editor wrapping.
 No automated test suite, test framework, or coverage threshold is configured.
 Syntax-check changed scripts with `py_compile`; report that this does not validate
 runtime behavior. Scripts execute API requests at import time, so avoid importing
-them for verification. Run live checks only when requested. If introducing tests,
+them for verification. Pure preprocessing helpers can be checked independently.
+Run live checks only when requested. If introducing tests,
 use `tests/test_*.py` and document the chosen runner and dependencies.
 
 ## Commit & Pull Request Guidelines

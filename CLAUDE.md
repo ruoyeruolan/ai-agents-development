@@ -47,9 +47,9 @@ So never run one to "verify" an edit; `py_compile` it instead.
 
 ## Credentials
 
-Secrets load from **`~/.secrets`** — `load_dotenv(Path.home() / ".secrets")` in every script — **not**
-the repo `.env`. The repo `.env` is a stale leftover (`DEEPSEEK_API_KEY`, lowercase `base_url`) that
-no script reads.
+Secrets load from **`~/.secrets`** via `load_dotenv(Path.home() / ".secrets")`.
+RAG scripts reuse `client` from `src/config/`, which performs this setup. The repo
+`.env` is a stale leftover (`DEEPSEEK_API_KEY`, lowercase `base_url`) that no script reads.
 
 `~/.secrets` defines `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL`,
 `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`.
@@ -74,10 +74,19 @@ kwargs. Keep them when editing it.
 - `src/basics/`, `src/demo/apis/`, `src/tool/`, and `src/rag/` — topic-based Python
   packages with lightweight `__init__.py` files. Use lowercase snake_case names.
   `tool` keeps symbolic links to matching implementations in `demo.apis`.
-- `src/config/` — shared configuration. Use `uv run python -m rag.embedding`
+- `src/config/` — model names, output token limits, and API client configuration.
+  Use `uv run python -m models.embedding`
   from the repo root. Setuptools discovers source packages and `uv` installs them
   in editable mode, enabling cross-package imports without `PYTHONPATH`.
   Pyright also searches `src/`.
+- `src/preprocess/text/` — pure Markdown splitting functions. `paragraph.py`
+  preserves the original blank-line strategy; `heading.py` groups whole chapters;
+  `heading_paragraph.py` prefixes smaller paragraphs with their chapter heading.
+  These modules can be imported for offline checks without loading credentials or
+  models. RAG scripts retain file reading, embeddings, retrieval, and API calls.
+- `src/models/embedding.py` — the introductory embedding and Top-1 RAG example.
+- `src/rag/settings.py` — shared prompts and roadmap questions. Model settings
+  come from `config`. Keep these consistent when comparing splitting strategies.
 - `resources/anthropic-courses/` — submodule of `anthropics/courses` (reference notebooks; their deps are not
   in this lockfile).
 - `README.md` is empty (0 bytes) — an open Phase 0 item.
@@ -112,6 +121,7 @@ tutorial code: untyped `tools`, `✓`/`✗` markers), `tool_runner_sdk.py` (the 
 - Flat top-level procedural script. No `if __name__ == "__main__":`, no `main()`, no argparse. Sync
   only, no `async`. Lowercase snake_case module filenames.
 - `load_dotenv(Path.home() / ".secrets")` right after imports, then `os.environ.get(...)`.
+  RAG exercises reuse `client` and `SOURCE_PATH` from `config` instead.
 - Tools inline as `tools: List[ToolParam] = [...]` with hand-written JSON Schema — not Pydantic, not
   helpers. Dispatch through one `run_tool(name, tool_input)` with a flat `if name == ...` chain
   returning simulated results.

@@ -4,6 +4,11 @@ from pathlib import Path
 import anthropic
 from dotenv import load_dotenv
 
+
+EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-0.6B"
+GENERATION_MODEL = "deepseek-v4-pro[1m]"
+MAX_OUTPUT_TOKENS = 10240
+
 load_dotenv(Path.home() / ".secrets")
 base_url = os.environ.get("ANTHROPIC_BASE_URL")
 auth_token = os.environ.get("ANTHROPIC_AUTH_TOKEN")
