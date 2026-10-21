@@ -30,7 +30,7 @@ document_embeddings = model.encode(documents)
 
 similarity = model.similarity(query_embeddings, document_embeddings)
 
-DEBUG_RETRIEVAL = True
+DEBUG_RETRIEVAL = False
 
 if DEBUG_RETRIEVAL:
     for query_idx in [2, 4]:
